@@ -1,0 +1,88 @@
+﻿@model List<DomainModel.Project>
+@{
+    ViewData["Title"] = "Home Page";
+
+
+}
+
+    <head>
+        <link href="..\css\nlb.css" rel="stylesheet" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        @*<p>Administriranje projekata</a>.</p>*@
+    </head>
+
+    @*<tr>
+        <td>
+            <div class="col-md-12" style="background-color:#27007D;margin-top:5px;margin-bottom:0px;">
+
+                <img src="images/Logo_NLB_10mm_Simple_negative.png" class="img-responsive" alt="NLB Beograd Imenik" height="75px" width="180px" />
+
+            </div>
+            <div class="col-md-12" style="background-color:#99cd2c;margin-top:0px;margin-bottom:5px;">
+
+                <h1 class="text-left" style="color:#ffffff;">Projekti</h1>
+            </div>
+        </td>
+    </tr>*@
+    <div class="col-6">
+        <button class="button"><a asp-controller="Project" asp-action="CreateNewProject">Unesi novi projekat</a></button>
+    </div>
+
+
+<table style="width:100%; border:double">
+    <thead>
+        <tr>
+            <th>Project ID</th>
+            <th>Naziv</th>
+            <th>Datum početka</th>
+            <th>Datum završetka</th>
+            <th>Menadžer</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var project in Model)
+        {
+        <tr>
+            <td>@project.ID_Project</td>
+            <td>@project.ProjectName</td>
+            <td>@project.StartDate</td>
+            <td>@project.EndDate</td>
+            <td>@project.ManagerName</td>
+        </tr>
+        }
+    </tbody>
+</table>
+@*<body>
+
+    <form id="form1" runat="server">
+
+        <table style="width:100%;">
+            <tr>
+                <td>
+                    <div class="col-md-12" style="background-color:#27007D;margin-top:5px;margin-bottom:0px;">
+
+                        <img src="images/Logo_NLB_10mm_Simple_negative.png" class="img-responsive" alt="NLB Beograd Imenik" height="75px" width="180px" />
+
+                    </div>
+                    <div class="col-md-12" style="background-color:#99cd2c;margin-top:0px;margin-bottom:5px;">
+
+                        <h1 class="text-left" style="color:#ffffff;">Projekti</h1>
+                    </div>
+                </td>
+            </tr>
+
+
+
+
+
+
+            
+        </table>
+        <div class="text-center">
+            <h1 class="display-4">Projekti</h1>
+
+            <p>&copy; 2020 - Harrow bros Inc.</p>
+        </div>
+    </form>
+
+</body>*@
