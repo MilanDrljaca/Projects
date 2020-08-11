@@ -9,9 +9,7 @@ namespace DomainModel
         [Key]
         public int ID_Project { get; set; }
         public string ProjectName { get; set; }
-        [DisplayFormat(DataFormatString = "{MMM yyyy}")]
         public DateTime StartDate { get; set; }
-        [DisplayFormat(DataFormatString = "{MMM yyyy}")]
         public DateTime? EndDate { get; set; }
         public string ManagerName { get; set; }
     }

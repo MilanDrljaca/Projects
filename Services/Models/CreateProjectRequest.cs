@@ -11,9 +11,7 @@ namespace Services.Models
         [Required(ErrorMessage = "Ime projekta je obavezno!")]
         public string ProjectName { get; set; }
         public int ProjectId { get; set; }
-        [DisplayFormat(DataFormatString = "{MMM yyyy}")]
         public DateTime StartDate { get; set; }
-        [DisplayFormat(DataFormatString = "{MMM yyyy}")]
         public DateTime? EndDate { get; set; }
         public string ManagerName { get; set; }
     }
