@@ -1,62 +1,45 @@
-﻿@*@model List<DomainModel.Project>*@
-@model PaginatedList<DomainModel.Project>
+﻿@model PaginatedList<DomainModel.Project>
 @{
     ViewData["Title"] = "Home Page";
-
-
 }
 
 <head>
     <link href="..\css\nlb.css" rel="stylesheet" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    @*<p>Administriranje projekata</a>.</p>*@
 </head>
 
-@*<tr>
-        <td>
-            <div class="col-md-12" style="background-color:#27007D;margin-top:5px;margin-bottom:0px;">
 
-                <img src="images/Logo_NLB_10mm_Simple_negative.png" class="img-responsive" alt="NLB Beograd Imenik" height="75px" width="180px" />
-
-            </div>
-            <div class="col-md-12" style="background-color:#99cd2c;margin-top:0px;margin-bottom:5px;">
-
-                <h1 class="text-left" style="color:#ffffff;">Projekti</h1>
-            </div>
-        </td>
-    </tr>*@
-
-
-
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
-        <p>
-            <a asp-controller="Project" asp-action="CreateNewProject">Unesi novi projekat</a>
-            |
-            Pretraži po imenu: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Traži" class="btn btn-default" /> |
-            <a asp-action="Index">Nazad na kompletnu listu</a>
+        <p style="text-align:right">
+            <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
         </p>
     </div>
 </form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ProjectIDSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">ID</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["IdSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Id</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ProjectNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Naziv</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ProjectNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Name</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ManagerNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Menadžer</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ManagerNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Manager</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["StartDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Datum početka</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StartDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Start Date</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["EndDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Datum završetka</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EndDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">End Date</a>
             </th>
             <th></th>
         </tr>
@@ -81,9 +64,9 @@
                     @Html.DisplayFor(modelItem => item.EndDate)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID_Project">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID_Project">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID_Project">Delete</a>
+                    <button class="button"><a asp-action="Edit" asp-route-id="@item.ID_Project">Edit</a></button>
+                    <button class="button"><a asp-action="Details" asp-route-id="@item.ID_Project">Details</a></button>
+                    <button class="button"><a asp-action="Delete" asp-route-id="@item.ID_Project">Delete</a></button>
                 </td>
             </tr>
         }
@@ -108,35 +91,3 @@
    class="btn btn-default @nextDisabled">
     Next
 </a>
-
-
-
-
-@*<div class="col-6">
-        <button class="button"><a asp-controller="Project" asp-action="CreateNewProject">Unesi novi projekat</a></button>
-    </div>*@
-
-
-@*<table style="width:100%; border:1px solid black; height:100%">
-        <thead>
-            <tr>
-                <th>Project ID</th>
-                <th>Naziv</th>
-                <th>Datum početka</th>
-                <th>Datum završetka</th>
-                <th>Menadžer</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var project in Model)
-            {
-                <tr>
-                    <td>@project.ID_Project</td>
-                    <td>@project.ProjectName</td>
-                    <td>@project.StartDate</td>
-                    <td>@project.EndDate</td>
-                    <td>@project.ManagerName</td>
-                </tr>
-            }
-        </tbody>
-    </table>*@

@@ -8,40 +8,22 @@ namespace DataAccessLayer.Repositories
 {
     public class ProjectRepo
     {
-
         public Project Create(Project project)
-
         {
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
-                /*  try
-                 -- {*/
                 context.Projects.Add(project);
                 context.SaveChanges();
                 return project;
-                /* }
-
-               catch (Exception ex)
-               {
-                   throw new RepositoryException("Communication with database failed. Unable to create User.", ex);
-               }*/
             }
         }
 
-        public Project Update(Project project)
+        public void Delete(Project project)
         {
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
-                //try {
-                context.Projects.Update(project);
+                context.Projects.Remove(project);
                 context.SaveChanges();
-                return project;
-                //}
-
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine("Si normalan brate?");
-                //        }
             }
         }
 
@@ -49,24 +31,20 @@ namespace DataAccessLayer.Repositories
         {
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
-
                 Project project = context.Projects.Find(id);
                 context.SaveChanges();
                 return project;
-
             }
         }
+
         public Project getProjectByProjectname(string ProjectName)
         {
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
-
-
                 Project project = context.Projects.FirstOrDefault(m => m.ProjectName == ProjectName);
 
                 context.SaveChanges();
                 return project;
-
             }
         }
 
@@ -78,19 +56,7 @@ namespace DataAccessLayer.Repositories
                 List<Project> projects = context.Projects.ToList();
                 context.SaveChanges();
                 return projects;
-
-            }
-
-        }
-        public bool DoesProjectExist(string ProjectName)
-        {
-            using (ApplicationDbContext context = new ApplicationDbContext())
-            {
-
-                return context.Projects.Any(m => m.ProjectName == ProjectName);
-
             }
         }
-
     }
 }
