@@ -21,10 +21,16 @@ namespace Projects.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IProjectService _projectService;
         private readonly ILogger<HomeController> _logger;
+        private readonly IManagerService _managerService;
 
-        public HomeController(ILogger<HomeController> logger, IProjectService projectService, ApplicationDbContext context)
+        public HomeController(
+            ILogger<HomeController> logger,
+            IProjectService projectService,
+            ApplicationDbContext context,
+            IManagerService managerService)
         {
             _projectService = projectService;
+            _managerService = managerService;
             _logger = logger;
             _context = context;
         }
@@ -94,6 +100,13 @@ namespace Projects.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            List<Manager> managers = _managerService.GetAllManagers();
+            List<string> managerNames = new List<string>();
+            foreach (var manager in managers)
+            {
+                managerNames.Add(manager.ManagerName);
+            }
+            ViewBag.Managers = managerNames;
             return View();
         }
 
@@ -141,6 +154,15 @@ namespace Projects.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            List<Manager> managers = _managerService.GetAllManagers();
+            List<string> managerNames = new List<string>();
+            
+            foreach (var manager in managers)
+            {
+                managerNames.Add(manager.ManagerName);
+            }
+            ViewBag.Managers = managerNames;
+
             return View(_context.Projects.Where(p => p.ID_Project == id).FirstOrDefault());
         }
 
@@ -154,6 +176,15 @@ namespace Projects.Controllers
 
 
 
+
+  
+        [HttpGet]
+        public IActionResult GetAllProjects()
+        {
+            List<Project> projects = _projectService.GetAllProjects();
+
+            return View(projects);
+        }
 
         public IActionResult Privacy()
         {

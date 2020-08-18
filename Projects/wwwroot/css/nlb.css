@@ -33,20 +33,23 @@
             text-decoration: none;
         }
 
+.first {
+    margin-top: 30px;
+}
 
 .button {
     display: inline-block;
-    padding: 5px 15px;
+    padding: 2px 10px;
     font-size: 14px;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
     outline: none;
     color: white;
-    background-color: #ADADAD;
+    background-color: #9F9C99;
     border: none;
     border-radius: 15px;
-    box-shadow: 0 5px #999;
+    box-shadow: 0 3px #999;
 }
 
     .button a {

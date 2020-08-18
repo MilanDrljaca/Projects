@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DomainModel
@@ -10,13 +11,19 @@ namespace DomainModel
         [Key]
         [DisplayName("Id")]
         public int ID_Project { get; set; }
-        [DisplayName("Naziv")]
+        [DisplayName("Name")]
         public string ProjectName { get; set; }
-        [DisplayName("Datum početka")]
+        [DisplayName("Start Date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime StartDate { get; set; }
-        [DisplayName("Datum završetka")]
+        [DisplayName("End Date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? EndDate { get; set; }
-        [DisplayName("Menadžer")]
+
+
+        [ForeignKey("Manager")]
+        [DisplayName("Manager Name")]
         public string ManagerName { get; set; }
+        public Manager Manager { get; set; }
     }
 }

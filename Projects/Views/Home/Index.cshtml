@@ -9,16 +9,17 @@
 </head>
 
 
-<p>
-    <a asp-action="Create">Create New</a>
+
+<p class="first">
+    <button class="button"><a asp-action="Create">Create New Project</a></button>
+    <button class="button"><a asp-controller="Manager" asp-action="Index">Manager List</a></button>
 </p>
 
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p style="text-align:right">
             <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
-            <a asp-action="Index">Back to Full List</a>
+            <input type="submit" value="Search" class="btn btn-default" />
         </p>
     </div>
 </form>
@@ -41,7 +42,7 @@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["EndDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">End Date</a>
             </th>
-            <th></th>
+            <th style="text-align:center;">@Html.DisplayName("Operations")</th>
         </tr>
     </thead>
     <tbody>
@@ -63,7 +64,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.EndDate)
                 </td>
-                <td>
+                <td style="text-align:center;">
                     <button class="button"><a asp-action="Edit" asp-route-id="@item.ID_Project">Edit</a></button>
                     <button class="button"><a asp-action="Details" asp-route-id="@item.ID_Project">Details</a></button>
                     <button class="button"><a asp-action="Delete" asp-route-id="@item.ID_Project">Delete</a></button>
@@ -72,6 +73,8 @@
         }
     </tbody>
 </table>
+
+
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -91,3 +94,5 @@
    class="btn btn-default @nextDisabled">
     Next
 </a>
+<button class="button"><a asp-action="Index">Back to Full List</a></button>
+

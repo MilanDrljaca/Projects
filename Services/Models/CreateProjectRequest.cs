@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using DomainModel;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,4 +23,3 @@ namespace Services.Models
         public string ManagerName { get; set; }
     }
 }
-
