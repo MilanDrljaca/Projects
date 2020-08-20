@@ -9,7 +9,7 @@ namespace DataAccesLayer.Repositories
 {
     public class ManagerRepo
     {
-        public List<Manager> GetAllManagers()
+        public List<Manager> GetAllActiveManagers()
         {
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
@@ -18,6 +18,17 @@ namespace DataAccesLayer.Repositories
                 List<Manager> activeManagers = managers.Where(a => a.Active > 0).ToList();
                 context.SaveChanges();
                 return activeManagers;
+            }
+        }
+        public List<Manager> GetAllManagers()
+        {
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                List<Manager> managers = context.Managers.ToList();
+
+               
+                context.SaveChanges();
+                return managers;
             }
         }
         public Manager CreateManager(Manager manager)
@@ -40,12 +51,11 @@ namespace DataAccesLayer.Repositories
             }
         }
 
-        public Manager DeactivateManager(string managerName)
+        public Manager GetManagerById(int id)
         {
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
-                Manager manager = context.Managers.First(a => a.ManagerName == managerName);
-                manager.Active = 0;
+                Manager manager = context.Managers.Find(id);
                 context.SaveChanges();
                 return manager;
             }

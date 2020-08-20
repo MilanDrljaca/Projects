@@ -24,13 +24,14 @@ namespace Projects.Controllers
             _context = context;
         }
 
-       
         public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter, int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["Active"] = sortOrder == "Id" ? "id_desc" : "Id";
+
+            ViewData["IdSortParm"] = sortOrder == "Id" ? "id_desc" : "Id";
+            ViewData["Active"] = sortOrder == "Active" ? "active_desc" : "Active";
             ViewData["ManagerNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "manager_name" : "";
-          
+
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -42,38 +43,40 @@ namespace Projects.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var projects = from s in _context.Managers
+            var managers = from s in _context.Managers
                            select s;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                projects = projects.Where(s => s.ManagerName.Contains(searchString)
-                                       || s.ManagerName.Contains(searchString));
+                managers = managers.Where(s => s.ManagerName.Contains(searchString)
+                                      );
             }
 
             switch (sortOrder)
             {
                 case "id_desc":
-                    projects = projects.OrderByDescending(s => s.Active);
+                    managers = managers.OrderByDescending(s => s.ID_Manager);
+                    break;
+                case "active_desc":
+                    managers = managers.OrderByDescending(s => s.Active);
                     break;
 
                 case "manager_name":
-                    projects = projects.OrderBy(s => s.ManagerName);
+                    managers = managers.OrderBy(s => s.ManagerName);
                     break;
-               
+
                 default:
-                    projects = projects.OrderBy(s => s.ManagerName);
+                    managers = managers.OrderBy(s => s.ID_Manager);
                     break;
             }
-            int pageSize = 5;
-            return View(await PaginatedList<Manager>.CreateAsync(projects.AsNoTracking(), pageNumber ?? 1, pageSize));
+            int pageSize = 6;
+            return View(await PaginatedList<Manager>.CreateAsync(managers.AsNoTracking(), pageNumber ?? 1, pageSize));
 
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-
             return View();
         }
 
@@ -87,10 +90,10 @@ namespace Projects.Controllers
 
             Manager manager = new Manager
             {
-            
+
                 ManagerName = createManagerRequest.ManagerName,
                 Active = 1,
-                
+
             };
 
             manager = _managerService.CreateManager(manager);
@@ -98,27 +101,24 @@ namespace Projects.Controllers
             return RedirectToAction("Index", "Manager");
         }
 
-
         [HttpGet]
-        public IActionResult Deactivate(string managerName)
+        public IActionResult Edit(int id)
         {
-            return View(_managerService.GetManagerByManagerName(managerName));
+            return View(_context.Managers.Where(p => p.ID_Manager == id).FirstOrDefault());
         }
 
         [HttpPost]
-        public IActionResult Deactivate(string managerName, IFormCollection collection)
+        public IActionResult Edit(int id, Manager manager)
         {
-            Manager manager = _managerService.GetManagerByManagerName(managerName);
-            _managerService.DeactivateManager(manager.ManagerName);
+            _context.Entry(manager).State = EntityState.Modified;
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
-
-
-        //[HttpGet]
-        //public IActionResult Details(int id)
-        //{
-        //    return View(_projectService.GetProjectByID(id));
-        //}
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            return View(_managerService.GetManagerById(id));
+        }
     }
 }

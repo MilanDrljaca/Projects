@@ -8,10 +8,10 @@
     <link href="~/css/nlb.css" rel="stylesheet" />
 </head>
 
-<h1>Details</h1>
+@*<h1>Details</h1>*@
 
 <div>
-    <h4>Project</h4>
+    <h4>Projekat</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -39,10 +39,16 @@
             @Html.DisplayFor(model => model.EndDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ManagerName)
+            @Html.DisplayNameFor(model => model.ID_Manager)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ManagerName)
+            @foreach (var manager in ViewBag.Managers)
+            {
+                @if (manager.ID_Manager == @Model.ID_Manager)
+                {
+                    @Html.DisplayName(manager.ManagerName)
+                }
+            }
         </dd>
     </dl>
 </div>

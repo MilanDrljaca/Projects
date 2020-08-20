@@ -9,14 +9,19 @@ namespace Services
 {
     public class ManagerService : IManagerService
 
-    { 
+    {
         public List<Manager> GetAllManagers()
         {
             ManagerRepo managerRepository = new ManagerRepo();
             List<Manager> managers = managerRepository.GetAllManagers();
             return managers;
         }
-
+        public List<Manager> GetAllActiveManagers()
+        {
+            ManagerRepo managerRepository = new ManagerRepo();
+            List<Manager> managers = managerRepository.GetAllActiveManagers();
+            return managers;
+        }
         public Manager CreateManager(Manager manager)
         {
             ManagerRepo managerRepository = new ManagerRepo();
@@ -30,10 +35,11 @@ namespace Services
             Manager manager = ManagerRepository.GetManagerByManagerName(managerName);
             return manager;
         }
-        public Manager DeactivateManager(string managerName)
+
+        public Manager GetManagerById(int id)
         {
             ManagerRepo ManagerRepository = new ManagerRepo();
-            Manager manager = ManagerRepository.DeactivateManager(managerName);
+            Manager manager = ManagerRepository.GetManagerById(id);
             return manager;
         }
 

@@ -37,11 +37,15 @@ namespace Projects.Controllers
 
         public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter, int? pageNumber)
         {
+
+            List<Manager> managers = _managerService.GetAllManagers();
+            ViewBag.Managers = managers;
+
             ViewData["CurrentSort"] = sortOrder;
 
             ViewData["IdSortParm"] = sortOrder == "Id" ? "id_desc" : "Id";
             ViewData["ProjectNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "project_name" : "";
-            ViewData["ManagerNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "manager_name" : "";
+            ViewData["ManagerIdSortParm"] = sortOrder == "Id" ? "manager_id_desc" : "Id";
             ViewData["StartDateSortParm"] = sortOrder == "StartDate" ? "start_date_desc" : "StartDate";
             ViewData["EndDateSortParm"] = sortOrder == "EndDate" ? "end_date_desc" : "EndDate";
 
@@ -62,7 +66,7 @@ namespace Projects.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 projects = projects.Where(s => s.ProjectName.Contains(searchString)
-                                       || s.ManagerName.Contains(searchString));
+                                       );
             }
 
             switch (sortOrder)
@@ -73,8 +77,8 @@ namespace Projects.Controllers
                 case "project_name":
                     projects = projects.OrderBy(s => s.ProjectName);
                     break;
-                case "manager_name":
-                    projects = projects.OrderBy(s => s.ManagerName);
+                case "manager_id_desc":
+                    projects = projects.OrderBy(s => s.ID_Manager);
                     break;
                 case "StartDate":
                     projects = projects.OrderBy(s => s.StartDate);
@@ -92,7 +96,7 @@ namespace Projects.Controllers
                     projects = projects.OrderBy(s => s.ID_Project);
                     break;
             }
-            int pageSize = 5;
+            int pageSize = 6;
             return View(await PaginatedList<Project>.CreateAsync(projects.AsNoTracking(), pageNumber ?? 1, pageSize));
 
         }
@@ -100,13 +104,9 @@ namespace Projects.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            List<Manager> managers = _managerService.GetAllManagers();
-            List<string> managerNames = new List<string>();
-            foreach (var manager in managers)
-            {
-                managerNames.Add(manager.ManagerName);
-            }
-            ViewBag.Managers = managerNames;
+            List<Manager> managers = _managerService.GetAllActiveManagers();
+            ViewBag.Managers = managers;
+
             return View();
         }
 
@@ -121,7 +121,7 @@ namespace Projects.Controllers
             Project project = new Project
             {
                 ProjectName = createProjectRequest.ProjectName,
-                ManagerName = createProjectRequest.ManagerName,
+                ID_Manager = createProjectRequest.ID_Manager,
                 StartDate = createProjectRequest.StartDate,
                 EndDate = createProjectRequest.EndDate,
             };
@@ -134,6 +134,9 @@ namespace Projects.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
+            List<Manager> managers = _managerService.GetAllManagers();
+            ViewBag.Managers = managers;
+
             return View(_projectService.GetProjectByID(id));
         }
 
@@ -148,20 +151,17 @@ namespace Projects.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
+            List<Manager> managers = _managerService.GetAllManagers();
+            ViewBag.Managers = managers;
+
             return View(_projectService.GetProjectByID(id));
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            List<Manager> managers = _managerService.GetAllManagers();
-            List<string> managerNames = new List<string>();
-            
-            foreach (var manager in managers)
-            {
-                managerNames.Add(manager.ManagerName);
-            }
-            ViewBag.Managers = managerNames;
+            List<Manager> managers = _managerService.GetAllActiveManagers();
+            ViewBag.Managers = managers;
 
             return View(_context.Projects.Where(p => p.ID_Project == id).FirstOrDefault());
         }
@@ -172,18 +172,6 @@ namespace Projects.Controllers
             _context.Entry(project).State = EntityState.Modified;
             _context.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-
-
-
-  
-        [HttpGet]
-        public IActionResult GetAllProjects()
-        {
-            List<Project> projects = _projectService.GetAllProjects();
-
-            return View(projects);
         }
 
         public IActionResult Privacy()

@@ -11,6 +11,7 @@ namespace DomainModel
         [Key]
         [DisplayName("Id")]
         public int ID_Project { get; set; }
+        [Required(ErrorMessage = "Ime Projekta je obavezno!")]
         [DisplayName("Name")]
         public string ProjectName { get; set; }
         [DisplayName("Start Date")]
@@ -22,8 +23,8 @@ namespace DomainModel
 
 
         [ForeignKey("Manager")]
-        [DisplayName("Manager Name")]
-        public string ManagerName { get; set; }
+        [DisplayName("Manager")]
+        public int ID_Manager { get; set; }
         public Manager Manager { get; set; }
     }
 }

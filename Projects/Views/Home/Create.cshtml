@@ -4,14 +4,13 @@
     ViewData["Title"] = "Create";
 }
 
-    <head>
-     
-        <link href="~/css/nlb.css" rel="stylesheet" />
-    </head>
+<head>
+    <link href="~/css/nlb.css" rel="stylesheet" />
+</head>
 
-<h1>Create</h1>
+@*<h1>Create</h1>*@
 
-<h4>Project</h4>
+<h4>Kreiranje projekta</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control"  type="date" />
+                <input asp-for="StartDate" class="form-control" type="date" value="" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,16 +32,20 @@
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ManagerName" class="control-label"></label>
-                <select asp-for="ManagerName" class="form-control" asp-items="@(new SelectList(ViewBag.Managers))">
-                    <option>Plaese select manager </option>
+                <label asp-for="ID_Manager" class="control-label"></label>
+                <select asp-for="ID_Manager" class="form-control" asp-items="@(new SelectList(ViewBag.Managers,"ID_Manager","ManagerName"))">
+                    <option selected disabled>Odaberite menadžera</option>
                 </select>
-                <span asp-validation-for="ManagerName" class="text-danger"></span>
+                <span asp-validation-for="ID_Manager" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="button" />
-                <button class="button"><a asp-action="Index">Back to List</a></button>
+                <input type="submit" value="Kreiraj" class="button" />
+                <button class="button"><a asp-action="Index">Nazad na listu</a></button>
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

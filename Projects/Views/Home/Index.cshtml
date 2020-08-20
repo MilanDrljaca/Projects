@@ -11,15 +11,15 @@
 
 
 <p class="first">
-    <button class="button"><a asp-action="Create">Create New Project</a></button>
-    <button class="button"><a asp-controller="Manager" asp-action="Index">Manager List</a></button>
+    <button class="button"><a asp-action="Create">Kreiraj novi projekat</a></button>
+    <button class="button"><a asp-controller="Manager" asp-action="Index">Lista menadžera</a></button>
 </p>
 
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p style="text-align:right">
             <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-default" />
+            <input type="submit" value="Pretraži" class="btn btn-default" />
         </p>
     </div>
 </form>
@@ -31,18 +31,18 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["IdSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Id</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ProjectNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Name</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ProjectNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Naziv</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ManagerNameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Manager</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["ManagerIdSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Menadžer</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["StartDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Start Date</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["StartDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Datum početka</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["EndDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">End Date</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EndDateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Datum završetka</a>
             </th>
-            <th style="text-align:center;">@Html.DisplayName("Operations")</th>
+            <th style="text-align:center;">@Html.DisplayName("Operacije") </th>
         </tr>
     </thead>
     <tbody>
@@ -56,7 +56,13 @@
                     @Html.DisplayFor(modelItem => item.ProjectName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ManagerName)
+                    @foreach (var manager in ViewBag.Managers)
+                    {
+                        @if (manager.ID_Manager == item.ID_Manager)
+                        {
+                            @Html.DisplayName(manager.ManagerName)
+                        }
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)
@@ -65,9 +71,9 @@
                     @Html.DisplayFor(modelItem => item.EndDate)
                 </td>
                 <td style="text-align:center;">
-                    <button class="button"><a asp-action="Edit" asp-route-id="@item.ID_Project">Edit</a></button>
-                    <button class="button"><a asp-action="Details" asp-route-id="@item.ID_Project">Details</a></button>
-                    <button class="button"><a asp-action="Delete" asp-route-id="@item.ID_Project">Delete</a></button>
+                    <button class="button"><a asp-action="Edit" asp-route-id="@item.ID_Project">Uredi</a></button>
+                    <button class="button"><a asp-action="Details" asp-route-id="@item.ID_Project">Detalji</a></button>
+                    <button class="button"><a asp-action="Delete" asp-route-id="@item.ID_Project">Izbriši</a></button>
                 </td>
             </tr>
         }
@@ -85,14 +91,14 @@
    asp-route-pageNumber="@(Model.PageIndex - 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-default @prevDisabled">
-    Previous
+    Prethodna strana
 </a>
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex + 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-default @nextDisabled">
-    Next
+    Sledeća strana
 </a>
-<button class="button"><a asp-action="Index">Back to Full List</a></button>
+<button class="button"><a asp-action="Index">Nazad na kompletnu listu</a></button>
 

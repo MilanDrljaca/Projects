@@ -8,10 +8,10 @@ namespace Services.Interfaces
     public interface IManagerService
     {
         public List<Manager> GetAllManagers();
+        public List<Manager> GetAllActiveManagers();
         public Manager CreateManager(Manager manager);
         public Manager GetManagerByManagerName(string managerName);
-        public Manager DeactivateManager(string managerName);
-    
+        public Manager GetManagerById(int id);
     }
 
 }
