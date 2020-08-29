@@ -12,6 +12,7 @@ namespace Services.Interfaces
         public Manager CreateManager(Manager manager);
         public Manager GetManagerByManagerName(string managerName);
         public Manager GetManagerById(int id);
+        public void Edit(Manager manager);
     }
 
 }

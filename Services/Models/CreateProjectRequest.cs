@@ -17,7 +17,6 @@ namespace Services.Models
         [DisplayName("Id")]
         public int ProjectId { get; set; }
         [DisplayName("Start Date")]
-
         [Required(ErrorMessage = "Start date is required!")]
         public DateTime StartDate { get; set; }
         [DisplayName("End Date")]

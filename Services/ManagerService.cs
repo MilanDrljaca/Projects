@@ -42,6 +42,12 @@ namespace Services
             Manager manager = ManagerRepository.GetManagerById(id);
             return manager;
         }
+        public void  Edit(Manager manager)
+        {
+            ManagerRepo ManagerRepository = new ManagerRepo();
+         ManagerRepository.Edit(manager);
+            
+        }
 
     }
 }

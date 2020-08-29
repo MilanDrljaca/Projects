@@ -101,6 +101,7 @@ namespace Projects.Controllers
 
         }
 
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -117,20 +118,31 @@ namespace Projects.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            Project project = new Project
+            try
             {
-                ProjectName = createProjectRequest.ProjectName,
-                ID_Manager = createProjectRequest.ID_Manager,
-                StartDate = createProjectRequest.StartDate,
-                EndDate = createProjectRequest.EndDate,
-            };
+                Project project = new Project
+                {
+                    ProjectName = createProjectRequest.ProjectName,
+                    ID_Manager = createProjectRequest.ID_Manager,
+                    StartDate = createProjectRequest.StartDate,
+                    EndDate = createProjectRequest.EndDate,
+                };
 
-            project = _projectService.Create(project);
+                if (project.StartDate > project.EndDate)
+                {
+                    throw new Exception("Invalid date range. End date must be after start date.");
+                }
 
-            return RedirectToAction("Index", "Home");
+                project = _projectService.Create(project);
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Exception = ex.Message;
+                return View("Error");
+            }
         }
-
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -157,22 +169,45 @@ namespace Projects.Controllers
             return View(_projectService.GetProjectByID(id));
         }
 
+        [HttpPost]
+        public IActionResult Edit(int id, Project project)
+        {
+            try
+            {
+                if (project.StartDate > project.EndDate)
+                {
+                    throw new Exception("Invalid date range. End date must be after start date.");
+                }
+
+                List<Project> projects = _projectService.GetAllProjects();
+
+                foreach (var projectFromDatabase in projects)
+                {
+                    if (project.ProjectName == projectFromDatabase.ProjectName && project.ID_Project != projectFromDatabase.ID_Project)
+                    {
+                        throw new Exception("Invalid project name. Project name already exists in database.");
+                    }
+                }
+
+                _projectService.Edit(project);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Exception = ex.Message;
+                return View("Error");
+            }
+
+        }
         [HttpGet]
         public IActionResult Edit(int id)
         {
             List<Manager> managers = _managerService.GetAllActiveManagers();
             ViewBag.Managers = managers;
 
-            return View(_context.Projects.Where(p => p.ID_Project == id).FirstOrDefault());
+            return View(_projectService.GetProjectByID(id));
         }
 
-        [HttpPost]
-        public IActionResult Edit(int id, Project project)
-        {
-            _context.Entry(project).State = EntityState.Modified;
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         public IActionResult Privacy()
         {

@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer;
 using DomainModel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +57,16 @@ namespace DataAccesLayer.Repositories
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
                 Manager manager = context.Managers.Find(id);
+                context.SaveChanges();
+                return manager;
+            }
+        }
+
+        public Manager Edit(Manager manager)
+        {
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                context.Entry(manager).State = EntityState.Modified;
                 context.SaveChanges();
                 return manager;
             }

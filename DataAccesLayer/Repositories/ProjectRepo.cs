@@ -1,4 +1,6 @@
-﻿using DomainModel;
+﻿using DataAccesLayer.CustomExceptions;
+using DomainModel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +58,31 @@ namespace DataAccessLayer.Repositories
                 List<Project> projects = context.Projects.ToList();
                 context.SaveChanges();
                 return projects;
+            }
+        }
+        public Project Edit(Project project)
+        {
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                context.Entry(project).State = EntityState.Modified;
+                context.SaveChanges();
+                return project;
+            }
+        }
+        public bool DoesProjectExist(string ProjectName)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    bool result = context.Projects.Any(i => i.ProjectName == ProjectName);
+                    context.SaveChanges();
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException("Communication with database failed. Project with this Name = " + ProjectName + ", already exists in database.", ex);
             }
         }
     }
